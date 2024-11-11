@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription au Concours de Beauté</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            text-align: center; /* Centre le titre */
+            margin-bottom: 20px; /* Espace sous le titre */
+        }
+        .form-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: auto;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"], input[type="email"], input[type="tel"], input[type="file"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 10px; /* Espace entre les boutons */
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .back-button {
+            background-color: #f44336; /* Couleur pour le bouton retour */
+        }
+        .back-button:hover {
+            background-color: #e53935; /* Couleur au survol */
+        }
+        /* Styles de la modal */
+        .modal {
+            display: none; /* Masqué par défaut */
+            position: fixed;
+            z-index: 1; /* Au-dessus des autres éléments */
+            left: 0;
+            top: 0;
+            width: 100%; /* Plein écran */
+            height: 100%; /* Plein écran */
+            overflow: auto; /* Active le défilement si nécessaire */
+            background-color: rgb(0,0,0); /* Couleur de fond */
+            background-color: rgba(0,0,0,0.4); /* Couleur de fond avec opacité */
+        }
+        .modal-content {
+            background-color: #4CAF50; /* Couleur verte pour le fond de la modal */
+            color: white; /* Couleur du texte */
+            margin: 15% auto; /* Centre la modal */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Largeur de la modal */
+            max-width: 400px; /* Largeur maximale */
+            border-radius: 5px; /* Coins arrondis */
+        }
+        .close {
+            color: #fff; /* Couleur du bouton de fermeture */
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: #ccc; /* Couleur au survol */
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Inscription au Concours de Beauté</h1>
+    <div class="form-container">
+        <form id="registrationForm" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="name">Nom</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">Téléphone</label>
+                <input type="tel" id="phone" name="phone" required>
+            </div>
+            <div class="form-group">
+                <label for="photo">Photo</label>
+                <input type="file" id="photo" name="photo" accept="image/*" required>
+            </div>
+            <button type="submit">S'inscrire</button>
+            <button type="button" class="back-button" onclick="window.history.back();">Retour</button>
+        </form>
+    </div>
+
+    <!-- Modal -->
+    <div id="successModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeModal">&times;</span>
+            <p id="successMessage"> </p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('registrationForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Empêche le rechargement de la page
+            
+            // Récupérer les données du formulaire
+            const formData = new FormData(this);
+            const name = document.getElementById('name').value; // Récupérer le nom
+
+            // Envoyer les données via AJAX
+            fetch('process_registration.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                // Vider le formulaire après l'inscription
+                this.reset();
+                
+                // Mettre à jour le message de succès avec le nom
+                document.getElementById('successMessage').innerText = `Merci  ${name} pour votre Inscription !`;
+                
+                // Afficher la modal de succès
+                document.getElementById('successModal').style.display = 'block';
+            })
+            .catch(error => {
+                console.error('Erreur:', error);
+            });
+        });
+
+        // Fermer la modal quand l'utilisateur clique sur <span> (x)
+        document.getElementById('closeModal').onclick = function() {
+            document.getElementById('successModal').style.display = "none";
+        }
+
+        // Fermer la modal quand l'utilisateur clique en dehors de la modal
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('successModal')) {
+                document.getElementById('successModal').style.display = "none";
+            }
+        }
+    </script>
+
+</body>
+</html>
