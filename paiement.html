@@ -14,6 +14,19 @@
             top: 50%;
             transform: translate(-50%, -50%);
         }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100px;
+            margin-bottom: 10px; /* Espace entre les boutons */
+        }
+        button:hover {
+            background-color: #45a049;
+        }
     </style>
     <script>
         function checkout() {
@@ -62,8 +75,8 @@
     </head>
     <body>
         <div class="sdk">
-            <h1>SDK SEAMLESS</h1>
-            <button onclick="checkout()">Checkout</button>
+            <h1>Pour Valider Votre Vote Veuillez Payer un Montant de 100 XAF</h1>
+            <button onclick="checkout()">Payer</button>
         </div>
     </body>
 </html>  
